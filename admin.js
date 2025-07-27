@@ -754,15 +754,35 @@ class LevelUpAdmin {
 
     // Lier les événements
     bindEvents() {
+        // Fonction helper pour ajouter un event listener de manière sécurisée
+        const safeAddEventListener = (id, event, callback) => {
+            const element = document.getElementById(id);
+            if (element) {
+                element.addEventListener(event, callback);
+            } else {
+                console.warn(`Element with id '${id}' not found in admin`);
+            }
+        };
+
         // Formulaire de défi
-        document.getElementById('challengeForm').addEventListener('submit', (e) => {
+        safeAddEventListener('challengeForm', 'submit', (e) => {
             e.preventDefault();
             
+            const textElement = document.getElementById('challengeText');
+            const categoryElement = document.getElementById('challengeCategory');
+            const xpElement = document.getElementById('challengeXP');
+            const activeElement = document.getElementById('challengeActive');
+
+            if (!textElement || !categoryElement || !xpElement || !activeElement) {
+                console.error('Form elements not found');
+                return;
+            }
+
             const formData = {
-                text: document.getElementById('challengeText').value.trim(),
-                category: document.getElementById('challengeCategory').value,
-                xp: document.getElementById('challengeXP').value,
-                active: document.getElementById('challengeActive').checked
+                text: textElement.value.trim(),
+                category: categoryElement.value,
+                xp: xpElement.value,
+                active: activeElement.checked
             };
 
             if (!formData.text) {
@@ -778,64 +798,74 @@ class LevelUpAdmin {
         });
 
         // Effacer le formulaire
-        document.getElementById('clearForm').addEventListener('click', () => {
+        safeAddEventListener('clearForm', 'click', () => {
             this.clearForm();
         });
 
         // Filtre par catégorie
-        document.getElementById('categoryFilter').addEventListener('change', (e) => {
+        safeAddEventListener('categoryFilter', 'change', (e) => {
             this.selectedCategory = e.target.value;
             this.renderChallenges();
         });
 
         // Toggle actifs uniquement
-        document.getElementById('toggleActive').addEventListener('click', () => {
+        safeAddEventListener('toggleActive', 'click', () => {
             this.showOnlyActive = !this.showOnlyActive;
             const button = document.getElementById('toggleActive');
-            if (this.showOnlyActive) {
-                button.textContent = 'Tous les défis';
-                button.classList.add('filter-active');
-            } else {
-                button.textContent = 'Actifs uniquement';
-                button.classList.remove('filter-active');
+            if (button) {
+                if (this.showOnlyActive) {
+                    button.textContent = 'Tous les défis';
+                    button.classList.add('filter-active');
+                } else {
+                    button.textContent = 'Actifs uniquement';
+                    button.classList.remove('filter-active');
+                }
             }
             this.renderChallenges();
         });
 
         // Toggle vue tableau/liste
-        document.getElementById('toggleView').addEventListener('click', () => {
+        safeAddEventListener('toggleView', 'click', () => {
             this.toggleView();
         });
 
         // Filtres du tableau
-        document.getElementById('tableSearch').addEventListener('input', (e) => {
+        safeAddEventListener('tableSearch', 'input', (e) => {
             this.tableFilters.search = e.target.value;
             this.renderChallenges();
         });
 
-        document.getElementById('tableCategoryFilter').addEventListener('change', (e) => {
+        safeAddEventListener('tableCategoryFilter', 'change', (e) => {
             this.tableFilters.category = e.target.value;
             this.renderChallenges();
         });
 
-        document.getElementById('tableStatusFilter').addEventListener('change', (e) => {
+        safeAddEventListener('tableStatusFilter', 'change', (e) => {
             this.tableFilters.status = e.target.value;
             this.renderChallenges();
         });
 
-        document.getElementById('tableSort').addEventListener('change', (e) => {
+        safeAddEventListener('tableSort', 'change', (e) => {
             this.tableFilters.sortBy = e.target.value;
             this.renderChallenges();
         });
 
-        document.getElementById('clearTableFilters').addEventListener('click', () => {
+        safeAddEventListener('clearTableFilters', 'click', () => {
             this.clearTableFilters();
         });
 
         // Ajouter une catégorie
-        document.getElementById('addCategory').addEventListener('click', () => {
-            const name = document.getElementById('newCategory').value.trim();
-            const emoji = document.getElementById('newCategoryEmoji').value.trim();
+        safeAddEventListener('addCategory', 'click', () => {
+            const nameElement = document.getElementById('newCategory');
+            const emojiElement = document.getElementById('newCategoryEmoji');
+            
+            if (!nameElement || !emojiElement) {
+                console.error('Category form elements not found');
+                return;
+            }
+
+            const name = nameElement.value.trim();
+            const emoji = emojiElement.value.trim();
             
             if (!name) {
                 this.showNotification('Le nom de la catégorie est requis !', 'error');
@@ -843,36 +873,39 @@ class LevelUpAdmin {
             }
             
             this.addCategory(name, emoji || '📋');
-            document.getElementById('newCategory').value = '';
-            document.getElementById('newCategoryEmoji').value = '';
+            nameElement.value = '';
+            emojiElement.value = '';
         });
 
         // Exporter les données
-        document.getElementById('exportData').addEventListener('click', () => {
+        safeAddEventListener('exportData', 'click', () => {
             this.exportData();
         });
 
         // Réinitialiser tous les utilisateurs
-        document.getElementById('resetAllUsers').addEventListener('click', () => {
+        safeAddEventListener('resetAllUsers', 'click', () => {
             this.resetAllUsers();
         });
 
         // Exporter les utilisateurs
-        document.getElementById('exportUsers').addEventListener('click', () => {
+        safeAddEventListener('exportUsers', 'click', () => {
             this.exportUsers();
         });
 
         // Importer des données
-        document.getElementById('importUsers').addEventListener('click', () => {
+        safeAddEventListener('importUsers', 'click', () => {
             this.importData();
         });
 
         // Fermer la modale en cliquant à l'extérieur
-        document.getElementById('confirmModal').addEventListener('click', (e) => {
-            if (e.target === document.getElementById('confirmModal')) {
-                this.closeConfirmModal();
-            }
-        });
+        const confirmModal = document.getElementById('confirmModal');
+        if (confirmModal) {
+            confirmModal.addEventListener('click', (e) => {
+                if (e.target === confirmModal) {
+                    this.closeConfirmModal();
+                }
+            });
+        }
 
         // Fermer la modale avec Escape
         document.addEventListener('keydown', (e) => {

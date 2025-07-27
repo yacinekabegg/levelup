@@ -626,42 +626,54 @@ class LevelUpApp {
 
     // Lier les événements
     bindEvents() {
+        // Fonction helper pour ajouter un event listener de manière sécurisée
+        const safeAddEventListener = (id, event, callback) => {
+            const element = document.getElementById(id);
+            if (element) {
+                element.addEventListener(event, callback);
+            } else {
+                console.warn(`Element with id '${id}' not found`);
+            }
+        };
+
         // Bouton compléter défi
-        document.getElementById('completeChallenge').addEventListener('click', () => {
+        safeAddEventListener('completeChallenge', 'click', () => {
             this.completeChallenge();
         });
 
         // Bouton changer défi
-        document.getElementById('changeChallenge').addEventListener('click', () => {
+        safeAddEventListener('changeChallenge', 'click', () => {
             this.changeChallenge();
         });
 
         // Bouton voir niveaux
-        document.getElementById('viewLevels').addEventListener('click', () => {
+        safeAddEventListener('viewLevels', 'click', () => {
             this.showLevelHistory();
         });
 
         // Bouton partager progression
-        document.getElementById('shareProgress').addEventListener('click', () => {
+        safeAddEventListener('shareProgress', 'click', () => {
             this.showShareModal();
         });
 
         // Fermer les modales
-        document.getElementById('closeShareModal').addEventListener('click', () => {
+        safeAddEventListener('closeShareModal', 'click', () => {
             this.closeModals();
         });
 
-        document.getElementById('closeLevelModal').addEventListener('click', () => {
+        safeAddEventListener('closeLevelModal', 'click', () => {
             this.closeModals();
         });
 
         // Fermer les modales en cliquant à l'extérieur
-        document.querySelectorAll('#shareModal, #levelModal').forEach(modal => {
-            modal.addEventListener('click', (e) => {
-                if (e.target === modal) {
-                    this.closeModals();
-                }
-            });
+        document.querySelectorAll('#shareModal, #levelModal, #monthlyAssessmentModal, #weeklyObjectiveModal').forEach(modal => {
+            if (modal) {
+                modal.addEventListener('click', (e) => {
+                    if (e.target === modal) {
+                        this.closeModals();
+                    }
+                });
+            }
         });
 
         // Fermer les modales avec la touche Escape
@@ -672,33 +684,44 @@ class LevelUpApp {
         });
 
         // Évaluation mensuelle
-        document.getElementById('monthlyAssessment').addEventListener('click', () => {
+        safeAddEventListener('monthlyAssessment', 'click', () => {
             this.showMonthlyAssessment();
         });
 
         // Sauvegarder l'évaluation mensuelle
-        document.getElementById('saveAssessment').addEventListener('click', () => {
+        safeAddEventListener('saveAssessment', 'click', () => {
             this.saveMonthlyAssessment();
         });
 
         // Fermer l'évaluation mensuelle
-        document.getElementById('closeAssessmentModal').addEventListener('click', () => {
+        safeAddEventListener('closeAssessmentModal', 'click', () => {
             this.closeModals();
         });
 
         // Ajouter un objectif hebdomadaire
-        document.getElementById('addWeeklyObjective').addEventListener('click', () => {
+        safeAddEventListener('addWeeklyObjective', 'click', () => {
             const modal = document.getElementById('weeklyObjectiveModal');
-            modal.classList.remove('hidden');
-            modal.classList.add('flex');
-            document.body.classList.add('modal-open');
+            if (modal) {
+                modal.classList.remove('hidden');
+                modal.classList.add('flex');
+                document.body.classList.add('modal-open');
+            }
         });
 
         // Sauvegarder un objectif hebdomadaire
-        document.getElementById('saveWeeklyObjective').addEventListener('click', () => {
-            const text = document.getElementById('weeklyObjectiveText').value.trim();
-            const category = document.getElementById('weeklyObjectiveCategory').value;
-            const priority = document.getElementById('weeklyObjectivePriority').value;
+        safeAddEventListener('saveWeeklyObjective', 'click', () => {
+            const textElement = document.getElementById('weeklyObjectiveText');
+            const categoryElement = document.getElementById('weeklyObjectiveCategory');
+            const priorityElement = document.getElementById('weeklyObjectivePriority');
+
+            if (!textElement || !categoryElement || !priorityElement) {
+                console.error('Form elements not found');
+                return;
+            }
+
+            const text = textElement.value.trim();
+            const category = categoryElement.value;
+            const priority = priorityElement.value;
 
             if (!text) {
                 this.showNotification('Veuillez saisir un objectif !', 'error');
@@ -708,12 +731,15 @@ class LevelUpApp {
             this.addWeeklyObjective({ text, category, priority });
             
             // Réinitialiser le formulaire
-            document.getElementById('weeklyObjectiveForm').reset();
+            const form = document.getElementById('weeklyObjectiveForm');
+            if (form) {
+                form.reset();
+            }
             this.closeModals();
         });
 
         // Fermer l'ajout d'objectif hebdomadaire
-        document.getElementById('closeWeeklyObjectiveModal').addEventListener('click', () => {
+        safeAddEventListener('closeWeeklyObjectiveModal', 'click', () => {
             this.closeModals();
         });
     }
