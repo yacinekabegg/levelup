@@ -81,10 +81,19 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Mettre à jour les objectifs hebdomadaires
     function updateWeeklyObjectives() {
+        console.log('Mise à jour des objectifs hebdomadaires');
+        console.log('Objectifs actuels:', userData.weeklyObjectives);
+        
         const objectivesContainer = document.getElementById('weeklyObjectives');
         const weekDatesElement = document.getElementById('weekDates');
         
-        if (!objectivesContainer) return;
+        console.log('Container trouvé:', objectivesContainer);
+        console.log('Dates trouvées:', weekDatesElement);
+        
+        if (!objectivesContainer) {
+            console.error('Container weeklyObjectives non trouvé');
+            return;
+        }
         
         // Calculer les dates de la semaine actuelle
         const now = new Date();
@@ -100,6 +109,7 @@ document.addEventListener('DOMContentLoaded', function() {
         objectivesContainer.innerHTML = '';
 
         if (userData.weeklyObjectives.length === 0) {
+            console.log('Aucun objectif, affichage du message vide');
             objectivesContainer.innerHTML = `
                 <div class="text-center py-6 text-gray-500">
                     <div class="text-3xl mb-2">📅</div>
@@ -110,7 +120,11 @@ document.addEventListener('DOMContentLoaded', function() {
             return;
         }
 
+        console.log('Affichage de', userData.weeklyObjectives.length, 'objectifs');
+        
         userData.weeklyObjectives.forEach((objective, index) => {
+            console.log('Affichage objectif:', objective);
+            
             const priorityIcons = {
                 low: '🟢',
                 medium: '🟡',
@@ -139,6 +153,8 @@ document.addEventListener('DOMContentLoaded', function() {
             
             objectivesContainer.appendChild(objectiveElement);
         });
+        
+        console.log('Mise à jour terminée');
     }
 
     // Obtenir le nom du mois en français
@@ -325,6 +341,8 @@ document.addEventListener('DOMContentLoaded', function() {
             const category = document.getElementById('weeklyObjectiveCategory').value;
             const priority = document.getElementById('weeklyObjectivePriority').value;
             
+            console.log('Ajout d\'objectif:', { text, category, priority });
+            
             if (!text) {
                 showNotification('Veuillez saisir un objectif !', 'error');
                 return;
@@ -340,9 +358,16 @@ document.addEventListener('DOMContentLoaded', function() {
                 createdAt: new Date().toISOString()
             };
             
+            console.log('Nouvel objectif créé:', newObjective);
+            
             userData.weeklyObjectives.push(newObjective);
+            console.log('Objectifs après ajout:', userData.weeklyObjectives);
+            
             saveUserData();
+            console.log('Données sauvegardées');
+            
             updateWeeklyObjectives();
+            console.log('Interface mise à jour');
             
             // Fermer le modal
             document.body.removeChild(modal);
@@ -443,8 +468,14 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     // Rendre les fonctions accessibles globalement
-    window.toggleWeeklyObjective = toggleWeeklyObjective;
-    window.deleteWeeklyObjective = deleteWeeklyObjective;
+    window.toggleWeeklyObjective = function(index) {
+        console.log('toggleWeeklyObjective appelé avec index:', index);
+        toggleWeeklyObjective(index);
+    };
+    window.deleteWeeklyObjective = function(index) {
+        console.log('deleteWeeklyObjective appelé avec index:', index);
+        deleteWeeklyObjective(index);
+    };
 
     // Démarrer l'application
     init();
