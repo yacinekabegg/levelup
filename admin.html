@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LevelUp - Administration</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="admin-styles.css">
+</head>
+<body class="bg-gradient-to-br from-blue-100 via-indigo-100 to-purple-100 min-h-screen font-['Fredoka']">
+    <!-- Header Admin -->
+    <header class="bg-white/90 backdrop-blur-sm shadow-lg border-b-4 border-blue-300">
+        <div class="container mx-auto px-4 py-4">
+            <div class="flex items-center justify-between">
+                <div class="flex items-center space-x-4">
+                    <h1 class="text-3xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
+                        🛠️ LevelUp Admin
+                    </h1>
+                    <span class="bg-red-100 text-red-800 px-3 py-1 rounded-full text-sm font-medium">
+                        Mode Administration
+                    </span>
+                </div>
+                <div class="flex items-center space-x-4">
+                    <a href="index.html" class="bg-gradient-to-r from-green-500 to-emerald-600 text-white px-4 py-2 rounded-lg hover:from-green-600 hover:to-emerald-700 transition-all duration-200">
+                        👁️ Voir le site
+                    </a>
+                    <button id="exportData" class="bg-gradient-to-r from-purple-500 to-pink-600 text-white px-4 py-2 rounded-lg hover:from-purple-600 hover:to-pink-700 transition-all duration-200">
+                        📤 Exporter
+                    </button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="container mx-auto px-4 py-8">
+        <!-- Stats Section -->
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
+            <div class="bg-white/90 backdrop-blur-sm rounded-xl shadow-lg p-6 border-2 border-blue-200">
+                <div class="flex items-center">
+                    <div class="p-3 bg-blue-100 rounded-lg">
+                        <span class="text-2xl">🎯</span>
+                    </div>
+                    <div class="ml-4">
+                        <p class="text-sm text-gray-600">Total Défis</p>
+                        <p class="text-2xl font-bold text-gray-800" id="totalChallenges">0</p>
+                    </div>
+                </div>
+            </div>
+            <div class="bg-white/90 backdrop-blur-sm rounded-xl shadow-lg p-6 border-2 border-green-200">
+                <div class="flex items-center">
+                    <div class="p-3 bg-green-100 rounded-lg">
+                        <span class="text-2xl">✅</span>
+                    </div>
+                    <div class="ml-4">
+                        <p class="text-sm text-gray-600">Défis Actifs</p>
+                        <p class="text-2xl font-bold text-gray-800" id="activeChallenges">0</p>
+                    </div>
+                </div>
+            </div>
+            <div class="bg-white/90 backdrop-blur-sm rounded-xl shadow-lg p-6 border-2 border-orange-200">
+                <div class="flex items-center">
+                    <div class="p-3 bg-orange-100 rounded-lg">
+                        <span class="text-2xl">📊</span>
+                    </div>
+                    <div class="ml-4">
+                        <p class="text-sm text-gray-600">Catégories</p>
+                        <p class="text-2xl font-bold text-gray-800" id="totalCategories">0</p>
+                    </div>
+                </div>
+            </div>
+            <div class="bg-white/90 backdrop-blur-sm rounded-xl shadow-lg p-6 border-2 border-purple-200">
+                <div class="flex items-center">
+                    <div class="p-3 bg-purple-100 rounded-lg">
+                        <span class="text-2xl">👥</span>
+                    </div>
+                    <div class="ml-4">
+                        <p class="text-sm text-gray-600">Utilisateurs</p>
+                        <p class="text-2xl font-bold text-gray-800" id="totalUsers">0</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Challenge Management Section -->
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+            <!-- Add/Edit Challenge -->
+            <div class="bg-white/90 backdrop-blur-sm rounded-2xl shadow-xl border-2 border-blue-200 p-6">
+                <h2 class="text-2xl font-bold text-gray-800 mb-6">➕ Ajouter/Modifier un Défi</h2>
+                
+                <form id="challengeForm" class="space-y-4">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Texte du défi</label>
+                        <textarea id="challengeText" rows="3" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent" placeholder="Ex: Appelle un ami que tu n'as pas vu depuis 6 mois"></textarea>
+                    </div>
+                    
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Catégorie</label>
+                        <select id="challengeCategory" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                            <option value="Social">🗣️ Social</option>
+                            <option value="Créativité">🎨 Créativité</option>
+                            <option value="Santé">💪 Santé</option>
+                            <option value="Apprentissage">📚 Apprentissage</option>
+                            <option value="Courage">🦁 Courage</option>
+                            <option value="Organisation">📋 Organisation</option>
+                            <option value="Bien-être">🧘 Bien-être</option>
+                            <option value="Compétence">🎯 Compétence</option>
+                            <option value="Générosité">🎁 Générosité</option>
+                            <option value="Découverte">🌍 Découverte</option>
+                        </select>
+                    </div>
+                    
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Points XP</label>
+                        <input type="number" id="challengeXP" min="10" max="100" value="25" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                    </div>
+                    
+                    <div class="flex items-center space-x-4">
+                        <label class="flex items-center">
+                            <input type="checkbox" id="challengeActive" checked class="rounded border-gray-300 text-blue-600 focus:ring-blue-500">
+                            <span class="ml-2 text-sm text-gray-700">Défi actif</span>
+                        </label>
+                    </div>
+                    
+                    <div class="flex space-x-3">
+                        <button type="submit" class="flex-1 bg-gradient-to-r from-blue-500 to-purple-600 text-white px-6 py-3 rounded-lg font-semibold hover:from-blue-600 hover:to-purple-700 transition-all duration-200">
+                            💾 Sauvegarder
+                        </button>
+                        <button type="button" id="clearForm" class="px-6 py-3 bg-gray-200 text-gray-800 rounded-lg hover:bg-gray-300 transition-colors">
+                            🔄 Effacer
+                        </button>
+                    </div>
+                </form>
+            </div>
+
+            <!-- Challenge List -->
+            <div class="bg-white/90 backdrop-blur-sm rounded-2xl shadow-xl border-2 border-green-200 p-6">
+                <div class="flex items-center justify-between mb-6">
+                    <h2 class="text-2xl font-bold text-gray-800">📋 Liste des Défis</h2>
+                    <div class="flex space-x-2">
+                        <select id="categoryFilter" class="px-3 py-1 border border-gray-300 rounded-lg text-sm">
+                            <option value="">Toutes les catégories</option>
+                        </select>
+                        <button id="toggleActive" class="px-3 py-1 bg-green-100 text-green-800 rounded-lg text-sm hover:bg-green-200">
+                            Actifs uniquement
+                        </button>
+                        <button id="toggleView" class="px-3 py-1 bg-blue-100 text-blue-800 rounded-lg text-sm hover:bg-blue-200">
+                            📊 Vue Tableau
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- Vue Liste (par défaut) -->
+                <div id="challengesListView" class="space-y-3 max-h-96 overflow-y-auto">
+                    <!-- Challenges will be populated here -->
+                </div>
+                
+                <!-- Vue Tableau -->
+                <div id="challengesTableView" class="hidden">
+                    <!-- Filtres du tableau -->
+                    <div class="mb-4 p-4 bg-gray-50 rounded-lg">
+                        <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-1">Recherche</label>
+                                <input type="text" id="tableSearch" placeholder="Rechercher dans les défis..." class="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-1">Catégorie</label>
+                                <select id="tableCategoryFilter" class="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                                    <option value="">Toutes les catégories</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-1">Statut</label>
+                                <select id="tableStatusFilter" class="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                                    <option value="">Tous les statuts</option>
+                                    <option value="active">Actifs uniquement</option>
+                                    <option value="inactive">Inactifs uniquement</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-1">Tri par</label>
+                                <select id="tableSort" class="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                                    <option value="id">ID (défaut)</option>
+                                    <option value="text">Texte A-Z</option>
+                                    <option value="text-desc">Texte Z-A</option>
+                                    <option value="category">Catégorie A-Z</option>
+                                    <option value="xp">XP croissant</option>
+                                    <option value="xp-desc">XP décroissant</option>
+                                    <option value="status">Statut</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="mt-3 flex justify-between items-center">
+                            <span id="tableResultsCount" class="text-sm text-gray-600">0 défis affichés</span>
+                            <button id="clearTableFilters" class="text-sm text-blue-600 hover:text-blue-800 underline">
+                                Effacer tous les filtres
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-sm text-left text-gray-800">
+                            <thead class="text-xs text-gray-700 uppercase bg-gray-50">
+                                <tr>
+                                    <th class="px-4 py-3 cursor-pointer hover:bg-gray-100" onclick="admin.sortTable('id')">
+                                        <div class="flex items-center">
+                                            ID
+                                            <span id="sort-id" class="ml-1">↕️</span>
+                                        </div>
+                                    </th>
+                                    <th class="px-4 py-3 cursor-pointer hover:bg-gray-100" onclick="admin.sortTable('text')">
+                                        <div class="flex items-center">
+                                            Texte du défi
+                                            <span id="sort-text" class="ml-1">↕️</span>
+                                        </div>
+                                    </th>
+                                    <th class="px-4 py-3 cursor-pointer hover:bg-gray-100" onclick="admin.sortTable('category')">
+                                        <div class="flex items-center">
+                                            Catégorie
+                                            <span id="sort-category" class="ml-1">↕️</span>
+                                        </div>
+                                    </th>
+                                    <th class="px-4 py-3 cursor-pointer hover:bg-gray-100" onclick="admin.sortTable('xp')">
+                                        <div class="flex items-center">
+                                            Points XP
+                                            <span id="sort-xp" class="ml-1">↕️</span>
+                                        </div>
+                                    </th>
+                                    <th class="px-4 py-3 cursor-pointer hover:bg-gray-100" onclick="admin.sortTable('status')">
+                                        <div class="flex items-center">
+                                            Statut
+                                            <span id="sort-status" class="ml-1">↕️</span>
+                                        </div>
+                                    </th>
+                                    <th class="px-4 py-3">Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="challengesTableBody">
+                                <!-- Table rows will be populated here -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Category Management -->
+        <div class="mt-8 bg-white/90 backdrop-blur-sm rounded-2xl shadow-xl border-2 border-purple-200 p-6">
+            <h2 class="text-2xl font-bold text-gray-800 mb-6">🏷️ Gestion des Catégories</h2>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div>
+                    <h3 class="text-lg font-semibold text-gray-800 mb-4">Ajouter une catégorie</h3>
+                    <div class="flex space-x-3">
+                        <input type="text" id="newCategory" placeholder="Nom de la catégorie" class="flex-1 px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent">
+                        <input type="text" id="newCategoryEmoji" placeholder="🎯" class="w-16 px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent text-center">
+                        <button id="addCategory" class="bg-gradient-to-r from-purple-500 to-pink-600 text-white px-4 py-2 rounded-lg hover:from-purple-600 hover:to-pink-700 transition-all duration-200">
+                            ➕
+                        </button>
+                    </div>
+                </div>
+                
+                <div>
+                    <h3 class="text-lg font-semibold text-gray-800 mb-4">Catégories existantes</h3>
+                    <div id="categoriesList" class="space-y-2">
+                        <!-- Categories will be populated here -->
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- User Management -->
+        <div class="mt-8 bg-white/90 backdrop-blur-sm rounded-2xl shadow-xl border-2 border-orange-200 p-6">
+            <h2 class="text-2xl font-bold text-gray-800 mb-6">👥 Gestion des Utilisateurs</h2>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div>
+                    <h3 class="text-lg font-semibold text-gray-800 mb-4">Actions globales</h3>
+                    <div class="space-y-3">
+                        <button id="resetAllUsers" class="w-full bg-red-500 text-white px-4 py-2 rounded-lg hover:bg-red-600 transition-colors">
+                            🔄 Réinitialiser tous les utilisateurs
+                        </button>
+                        <button id="exportUsers" class="w-full bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 transition-colors">
+                            📊 Exporter les données utilisateurs
+                        </button>
+                        <button id="importUsers" class="w-full bg-green-500 text-white px-4 py-2 rounded-lg hover:bg-green-600 transition-colors">
+                            📥 Importer des données
+                        </button>
+                    </div>
+                </div>
+                
+                <div>
+                    <h3 class="text-lg font-semibold text-gray-800 mb-4">Statistiques</h3>
+                    <div id="userStats" class="space-y-2 text-sm">
+                        <!-- User stats will be populated here -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Modals -->
+    <div id="confirmModal" class="fixed inset-0 bg-black/50 backdrop-blur-sm hidden items-center justify-center z-50">
+        <div class="bg-white rounded-2xl p-6 max-w-md mx-4 shadow-2xl">
+            <h3 class="text-xl font-bold text-gray-800 mb-4" id="confirmTitle">Confirmation</h3>
+            <p class="text-gray-600 mb-6" id="confirmMessage">Êtes-vous sûr de vouloir effectuer cette action ?</p>
+            <div class="flex space-x-3">
+                <button id="confirmYes" class="flex-1 bg-red-500 text-white py-2 px-4 rounded-lg hover:bg-red-600 transition-colors">
+                    Oui
+                </button>
+                <button id="confirmNo" class="flex-1 bg-gray-200 text-gray-800 py-2 px-4 rounded-lg hover:bg-gray-300 transition-colors">
+                    Non
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script src="admin.js"></script>
+</body>
+</html> 

@@ -1,0 +1,225 @@
+/* Styles personnalisés pour LevelUp */
+
+/* Animation pour l'avatar */
+@keyframes bounce {
+    0%, 20%, 50%, 80%, 100% {
+        transform: translateY(0);
+    }
+    40% {
+        transform: translateY(-10px);
+    }
+    60% {
+        transform: translateY(-5px);
+    }
+}
+
+#avatar:hover {
+    animation: bounce 1s ease-in-out;
+}
+
+/* Animation pour les boutons */
+@keyframes pulse {
+    0% {
+        box-shadow: 0 0 0 0 rgba(147, 51, 234, 0.7);
+    }
+    70% {
+        box-shadow: 0 0 0 10px rgba(147, 51, 234, 0);
+    }
+    100% {
+        box-shadow: 0 0 0 0 rgba(147, 51, 234, 0);
+    }
+}
+
+#completeChallenge:hover {
+    animation: pulse 1s infinite;
+}
+
+/* Animation pour la barre XP */
+@keyframes fillBar {
+    from {
+        width: 0%;
+    }
+    to {
+        width: var(--xp-percentage);
+    }
+}
+
+#xpBar {
+    animation: fillBar 1s ease-out;
+}
+
+/* Styles pour les modales */
+.modal-open {
+    overflow: hidden;
+}
+
+/* Animation d'entrée pour les modales */
+@keyframes slideIn {
+    from {
+        opacity: 0;
+        transform: translateY(-50px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+#shareModal > div,
+#levelModal > div {
+    animation: slideIn 0.3s ease-out;
+}
+
+/* Styles pour les objectifs */
+.goal-progress {
+    transition: width 0.5s ease-in-out;
+}
+
+/* Effet de brillance sur les cartes */
+.challenge-card,
+.goals-card {
+    position: relative;
+    overflow: hidden;
+}
+
+.challenge-card::before,
+.goals-card::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: linear-gradient(
+        45deg,
+        transparent,
+        rgba(255, 255, 255, 0.1),
+        transparent
+    );
+    transform: rotate(45deg);
+    transition: all 0.3s ease;
+    opacity: 0;
+}
+
+.challenge-card:hover::before,
+.goals-card:hover::before {
+    opacity: 1;
+    transform: rotate(45deg) translate(50%, 50%);
+}
+
+/* Styles pour les notifications */
+.notification {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    background: linear-gradient(135deg, #10b981, #059669);
+    color: white;
+    padding: 1rem 1.5rem;
+    border-radius: 1rem;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+    transform: translateX(100%);
+    transition: transform 0.3s ease;
+    z-index: 1000;
+}
+
+.notification.show {
+    transform: translateX(0);
+}
+
+/* Styles pour les confettis */
+.confetti {
+    position: fixed;
+    width: 10px;
+    height: 10px;
+    background: #fbbf24;
+    animation: confetti-fall 3s linear infinite;
+    z-index: 999;
+}
+
+@keyframes confetti-fall {
+    0% {
+        transform: translateY(-100vh) rotate(0deg);
+        opacity: 1;
+    }
+    100% {
+        transform: translateY(100vh) rotate(720deg);
+        opacity: 0;
+    }
+}
+
+/* Responsive design amélioré */
+@media (max-width: 640px) {
+    .container {
+        padding-left: 1rem;
+        padding-right: 1rem;
+    }
+    
+    #avatar {
+        width: 6rem;
+        height: 6rem;
+        font-size: 3rem;
+    }
+    
+    .text-3xl {
+        font-size: 1.875rem;
+    }
+    
+    .text-2xl {
+        font-size: 1.5rem;
+    }
+}
+
+/* Styles pour les thèmes sombres (optionnel) */
+@media (prefers-color-scheme: dark) {
+    body {
+        background: linear-gradient(135deg, #1f2937, #374151, #4b5563);
+    }
+    
+    .bg-white\/90 {
+        background-color: rgba(31, 41, 55, 0.9);
+    }
+    
+    .text-gray-800 {
+        color: #f3f4f6;
+    }
+    
+    .text-gray-700 {
+        color: #d1d5db;
+    }
+    
+    .text-gray-600 {
+        color: #9ca3af;
+    }
+}
+
+/* Amélioration de l'accessibilité */
+button:focus,
+input:focus {
+    outline: 2px solid #8b5cf6;
+    outline-offset: 2px;
+}
+
+/* Styles pour les états de chargement */
+.loading {
+    opacity: 0.7;
+    pointer-events: none;
+}
+
+.loading::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 20px;
+    height: 20px;
+    margin: -10px 0 0 -10px;
+    border: 2px solid #f3f4f6;
+    border-top: 2px solid #8b5cf6;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+} 

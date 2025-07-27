@@ -1,0 +1,498 @@
+/* Styles pour l'interface d'administration LevelUp */
+
+/* Animation pour les cartes de statistiques */
+@keyframes slideInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.bg-white\/90 {
+    animation: slideInUp 0.5s ease-out;
+}
+
+/* Animation pour les boutons d'action */
+@keyframes pulse {
+    0% {
+        box-shadow: 0 0 0 0 rgba(59, 130, 246, 0.7);
+    }
+    70% {
+        box-shadow: 0 0 0 10px rgba(59, 130, 246, 0);
+    }
+    100% {
+        box-shadow: 0 0 0 0 rgba(59, 130, 246, 0);
+    }
+}
+
+button:hover {
+    animation: pulse 1s infinite;
+}
+
+/* Styles pour les listes de défis */
+.challenge-item {
+    transition: all 0.3s ease;
+    border-left: 4px solid transparent;
+}
+
+.challenge-item:hover {
+    transform: translateX(5px);
+    border-left-color: #3b82f6;
+}
+
+.challenge-item.active {
+    border-left-color: #10b981;
+    background: linear-gradient(135deg, #f0fdf4, #ecfdf5);
+}
+
+.challenge-item.inactive {
+    border-left-color: #ef4444;
+    background: linear-gradient(135deg, #fef2f2, #fecaca);
+    opacity: 0.7;
+}
+
+/* Styles pour les catégories */
+.category-item {
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.category-item::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
+    transition: left 0.5s ease;
+}
+
+.category-item:hover::before {
+    left: 100%;
+}
+
+/* Styles pour les notifications admin */
+.admin-notification {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    background: linear-gradient(135deg, #3b82f6, #1d4ed8);
+    color: white;
+    padding: 1rem 1.5rem;
+    border-radius: 1rem;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+    transform: translateX(100%);
+    transition: transform 0.3s ease;
+    z-index: 1000;
+    max-width: 300px;
+}
+
+.admin-notification.show {
+    transform: translateX(0);
+}
+
+.admin-notification.success {
+    background: linear-gradient(135deg, #10b981, #059669);
+}
+
+.admin-notification.error {
+    background: linear-gradient(135deg, #ef4444, #dc2626);
+}
+
+.admin-notification.warning {
+    background: linear-gradient(135deg, #f59e0b, #d97706);
+}
+
+/* Styles pour les modales */
+.modal-open {
+    overflow: hidden;
+}
+
+@keyframes slideIn {
+    from {
+        opacity: 0;
+        transform: translateY(-50px) scale(0.9);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+#confirmModal > div {
+    animation: slideIn 0.3s ease-out;
+}
+
+/* Styles pour les formulaires */
+.form-group {
+    position: relative;
+}
+
+.form-group input:focus,
+.form-group textarea:focus,
+.form-group select:focus {
+    outline: none;
+    border-color: #3b82f6;
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+}
+
+/* Styles pour les boutons d'action */
+.action-button {
+    position: relative;
+    overflow: hidden;
+}
+
+.action-button::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+    transition: width 0.3s ease, height 0.3s ease;
+}
+
+.action-button:hover::before {
+    width: 300px;
+    height: 300px;
+}
+
+/* Styles pour les statistiques */
+.stats-card {
+    position: relative;
+    overflow: hidden;
+}
+
+.stats-card::after {
+    content: '';
+    position: absolute;
+    top: -50%;
+    right: -50%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(45deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+    transform: rotate(45deg);
+    transition: all 0.3s ease;
+    opacity: 0;
+}
+
+.stats-card:hover::after {
+    opacity: 1;
+    transform: rotate(45deg) translate(50%, 50%);
+}
+
+/* Styles pour les filtres */
+.filter-active {
+    background: linear-gradient(135deg, #10b981, #059669) !important;
+    color: white !important;
+}
+
+/* Styles pour les listes déroulantes */
+.custom-scrollbar {
+    scrollbar-width: thin;
+    scrollbar-color: #cbd5e1 #f1f5f9;
+}
+
+.custom-scrollbar::-webkit-scrollbar {
+    width: 6px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-track {
+    background: #f1f5f9;
+    border-radius: 3px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb {
+    background: #cbd5e1;
+    border-radius: 3px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+    background: #94a3b8;
+}
+
+/* Styles pour le tableau */
+table {
+    border-collapse: collapse;
+    width: 100%;
+}
+
+th {
+    background-color: #f8fafc;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: #374151;
+}
+
+td, th {
+    padding: 0.75rem 1rem;
+    text-align: left;
+    border-bottom: 1px solid #e5e7eb;
+}
+
+tr:hover {
+    background-color: #f9fafb;
+}
+
+tr.active {
+    background-color: #f0fdf4;
+}
+
+tr.inactive {
+    background-color: #fef2f2;
+    opacity: 0.7;
+}
+
+/* Styles pour les cellules du tableau */
+.table-cell-id {
+    text-align: center;
+    font-family: monospace;
+}
+
+.table-cell-text {
+    max-width: 300px;
+    word-wrap: break-word;
+}
+
+.table-cell-category {
+    white-space: nowrap;
+}
+
+.table-cell-xp {
+    text-align: center;
+    font-weight: 600;
+}
+
+.table-cell-status {
+    text-align: center;
+}
+
+.table-cell-actions {
+    text-align: center;
+    white-space: nowrap;
+}
+
+/* Styles pour les en-têtes de tableau cliquables */
+th.cursor-pointer {
+    transition: background-color 0.2s ease;
+}
+
+th.cursor-pointer:hover {
+    background-color: #f3f4f6;
+}
+
+/* Styles pour les filtres du tableau */
+.table-filters {
+    background: linear-gradient(135deg, #f8fafc, #f1f5f9);
+    border: 1px solid #e2e8f0;
+}
+
+.table-filters input,
+.table-filters select {
+    transition: all 0.2s ease;
+}
+
+.table-filters input:focus,
+.table-filters select:focus {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+/* Animation pour les indicateurs de tri */
+.sort-indicator {
+    transition: all 0.2s ease;
+}
+
+.sort-indicator:hover {
+    transform: scale(1.1);
+}
+
+/* Styles pour les états de chargement */
+.loading-spinner {
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+    border: 3px solid #f3f4f6;
+    border-radius: 50%;
+    border-top-color: #3b82f6;
+    animation: spin 1s ease-in-out infinite;
+}
+
+@keyframes spin {
+    to { transform: rotate(360deg); }
+}
+
+/* Styles pour les badges de statut */
+.status-badge {
+    display: inline-flex;
+    align-items: center;
+    padding: 0.25rem 0.75rem;
+    border-radius: 9999px;
+    font-size: 0.75rem;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.status-badge.active {
+    background-color: #dcfce7;
+    color: #166534;
+}
+
+.status-badge.inactive {
+    background-color: #fee2e2;
+    color: #991b1b;
+}
+
+.status-badge.draft {
+    background-color: #fef3c7;
+    color: #92400e;
+}
+
+/* Styles pour les tooltips */
+.tooltip {
+    position: relative;
+}
+
+.tooltip::before {
+    content: attr(data-tooltip);
+    position: absolute;
+    bottom: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    background: #1f2937;
+    color: white;
+    padding: 0.5rem 0.75rem;
+    border-radius: 0.5rem;
+    font-size: 0.75rem;
+    white-space: nowrap;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s ease;
+    z-index: 1000;
+}
+
+.tooltip::after {
+    content: '';
+    position: absolute;
+    bottom: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    border: 5px solid transparent;
+    border-top-color: #1f2937;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s ease;
+}
+
+.tooltip:hover::before,
+.tooltip:hover::after {
+    opacity: 1;
+}
+
+/* Responsive design pour l'admin */
+@media (max-width: 768px) {
+    .container {
+        padding-left: 1rem;
+        padding-right: 1rem;
+    }
+    
+    .grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .flex {
+        flex-direction: column;
+    }
+    
+    .space-x-3 > * + * {
+        margin-left: 0;
+        margin-top: 0.75rem;
+    }
+    
+    .space-x-4 > * + * {
+        margin-left: 0;
+        margin-top: 1rem;
+    }
+}
+
+/* Styles pour les thèmes sombres (optionnel) */
+@media (prefers-color-scheme: dark) {
+    body {
+        background: linear-gradient(135deg, #1e293b, #334155, #475569);
+    }
+    
+    .bg-white\/90 {
+        background-color: rgba(30, 41, 59, 0.9);
+    }
+    
+    .text-gray-800 {
+        color: #f1f5f9;
+    }
+    
+    .text-gray-700 {
+        color: #e2e8f0;
+    }
+    
+    .text-gray-600 {
+        color: #cbd5e1;
+    }
+    
+    .border-gray-300 {
+        border-color: #475569;
+    }
+    
+    input, textarea, select {
+        background-color: #334155;
+        color: #f1f5f9;
+        border-color: #475569;
+    }
+    
+    input:focus, textarea:focus, select:focus {
+        background-color: #475569;
+    }
+}
+
+/* Amélioration de l'accessibilité */
+button:focus,
+input:focus,
+textarea:focus,
+select:focus {
+    outline: 2px solid #3b82f6;
+    outline-offset: 2px;
+}
+
+/* Styles pour les animations de transition */
+.fade-in {
+    animation: fadeIn 0.5s ease-in;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+.slide-up {
+    animation: slideUp 0.3s ease-out;
+}
+
+@keyframes slideUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+} 
