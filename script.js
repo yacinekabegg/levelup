@@ -74,6 +74,98 @@ document.addEventListener('DOMContentLoaded', function() {
             const rerollsLeft = Math.max(0, 1 - userData.rerollsUsed);
             rerollsElement.innerHTML = `Rerolls restants aujourd'hui: <span class="font-semibold">${rerollsLeft}</span>`;
         }
+        
+        // Mettre à jour les objectifs hebdomadaires
+        updateWeeklyObjectives();
+    }
+
+    // Mettre à jour les objectifs hebdomadaires
+    function updateWeeklyObjectives() {
+        const objectivesContainer = document.getElementById('weeklyObjectives');
+        const weekDatesElement = document.getElementById('weekDates');
+        
+        if (!objectivesContainer) return;
+        
+        // Calculer les dates de la semaine actuelle
+        const now = new Date();
+        const startOfWeek = new Date(now);
+        startOfWeek.setDate(now.getDate() - now.getDay() + 1);
+        const endOfWeek = new Date(startOfWeek);
+        endOfWeek.setDate(startOfWeek.getDate() + 6);
+        
+        if (weekDatesElement) {
+            weekDatesElement.textContent = `Semaine du ${startOfWeek.getDate()} ${getMonthName(startOfWeek.getMonth())} au ${endOfWeek.getDate()} ${getMonthName(endOfWeek.getMonth())}`;
+        }
+        
+        objectivesContainer.innerHTML = '';
+
+        if (userData.weeklyObjectives.length === 0) {
+            objectivesContainer.innerHTML = `
+                <div class="text-center py-6 text-gray-500">
+                    <div class="text-3xl mb-2">📅</div>
+                    <p>Aucun objectif hebdomadaire</p>
+                    <p class="text-sm">Ajoutez vos objectifs pour la semaine</p>
+                </div>
+            `;
+            return;
+        }
+
+        userData.weeklyObjectives.forEach((objective, index) => {
+            const priorityIcons = {
+                low: '🟢',
+                medium: '🟡',
+                high: '🔴'
+            };
+
+            const objectiveElement = document.createElement('div');
+            objectiveElement.className = `flex items-center p-3 bg-gradient-to-r from-green-50 to-blue-50 rounded-xl border border-green-200 ${objective.completed ? 'opacity-60' : ''}`;
+            objectiveElement.innerHTML = `
+                <div class="flex items-center flex-1">
+                    <span class="text-lg mr-3">${priorityIcons[objective.priority]}</span>
+                    <div class="flex-1">
+                        <div class="font-medium text-gray-800">${objective.text}</div>
+                        <div class="text-sm text-gray-600">${objective.category}</div>
+                    </div>
+                </div>
+                <div class="flex items-center space-x-2">
+                    <button onclick="toggleWeeklyObjective(${index})" class="text-green-600 hover:text-green-800 p-1" title="${objective.completed ? 'Marquer comme non terminé' : 'Marquer comme terminé'}">
+                        ${objective.completed ? '✅' : '⭕'}
+                    </button>
+                    <button onclick="deleteWeeklyObjective(${index})" class="text-red-600 hover:text-red-800 p-1" title="Supprimer">
+                        🗑️
+                    </button>
+                </div>
+            `;
+            
+            objectivesContainer.appendChild(objectiveElement);
+        });
+    }
+
+    // Obtenir le nom du mois en français
+    function getMonthName(monthIndex) {
+        const months = [
+            'janvier', 'février', 'mars', 'avril', 'mai', 'juin',
+            'juillet', 'août', 'septembre', 'octobre', 'novembre', 'décembre'
+        ];
+        return months[monthIndex];
+    }
+
+    // Basculer le statut d'un objectif hebdomadaire
+    function toggleWeeklyObjective(index) {
+        userData.weeklyObjectives[index].completed = !userData.weeklyObjectives[index].completed;
+        saveUserData();
+        updateWeeklyObjectives();
+        
+        const status = userData.weeklyObjectives[index].completed ? 'terminé' : 'non terminé';
+        showNotification(`Objectif marqué comme ${status} ! ✅`, 'success');
+    }
+
+    // Supprimer un objectif hebdomadaire
+    function deleteWeeklyObjective(index) {
+        userData.weeklyObjectives.splice(index, 1);
+        saveUserData();
+        updateWeeklyObjectives();
+        showNotification('Objectif hebdomadaire supprimé ! 🗑️', 'success');
     }
 
     // Compléter un défi
@@ -174,7 +266,100 @@ document.addEventListener('DOMContentLoaded', function() {
     // Ajouter un objectif hebdomadaire
     function addWeeklyObjective() {
         console.log('Ajout d\'objectif hebdomadaire');
-        alert('Fonctionnalité d\'ajout d\'objectif - En cours de développement');
+        
+        // Créer le modal d'ajout d'objectif
+        const modal = document.createElement('div');
+        modal.id = 'weeklyObjectiveModal';
+        modal.className = 'fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50';
+        modal.innerHTML = `
+            <div class="bg-white rounded-2xl p-6 max-w-md mx-4 shadow-2xl">
+                <h3 class="text-xl font-bold text-gray-800 mb-4">➕ Ajouter un Objectif Hebdomadaire</h3>
+                
+                <form id="weeklyObjectiveForm" class="space-y-4">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Objectif</label>
+                        <input type="text" id="weeklyObjectiveText" placeholder="Ex: Faire 3 séances de sport" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent" required>
+                    </div>
+                    
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Catégorie</label>
+                        <select id="weeklyObjectiveCategory" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent">
+                            <option value="Santé">💪 Santé</option>
+                            <option value="Apprentissage">📚 Apprentissage</option>
+                            <option value="Social">🗣️ Social</option>
+                            <option value="Créativité">🎨 Créativité</option>
+                            <option value="Organisation">📋 Organisation</option>
+                            <option value="Bien-être">🧘 Bien-être</option>
+                        </select>
+                    </div>
+                    
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Priorité</label>
+                        <select id="weeklyObjectivePriority" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent">
+                            <option value="low">🟢 Faible</option>
+                            <option value="medium" selected>🟡 Moyenne</option>
+                            <option value="high">🔴 Élevée</option>
+                        </select>
+                    </div>
+                </form>
+                
+                <div class="flex space-x-3 mt-6">
+                    <button id="saveWeeklyObjective" class="flex-1 bg-gradient-to-r from-green-500 to-emerald-600 text-white py-2 px-4 rounded-lg hover:from-green-600 hover:to-emerald-700 transition-all duration-200">
+                        Ajouter
+                    </button>
+                    <button id="closeWeeklyObjectiveModal" class="flex-1 bg-gray-200 text-gray-800 py-2 px-4 rounded-lg hover:bg-gray-300 transition-colors">
+                        Annuler
+                    </button>
+                </div>
+            </div>
+        `;
+        
+        document.body.appendChild(modal);
+        
+        // Ajouter les événements
+        const saveButton = document.getElementById('saveWeeklyObjective');
+        const closeButton = document.getElementById('closeWeeklyObjectiveModal');
+        
+        saveButton.addEventListener('click', () => {
+            const text = document.getElementById('weeklyObjectiveText').value.trim();
+            const category = document.getElementById('weeklyObjectiveCategory').value;
+            const priority = document.getElementById('weeklyObjectivePriority').value;
+            
+            if (!text) {
+                showNotification('Veuillez saisir un objectif !', 'error');
+                return;
+            }
+            
+            // Ajouter l'objectif
+            const newObjective = {
+                id: Date.now(),
+                text: text,
+                category: category,
+                priority: priority,
+                completed: false,
+                createdAt: new Date().toISOString()
+            };
+            
+            userData.weeklyObjectives.push(newObjective);
+            saveUserData();
+            updateWeeklyObjectives();
+            
+            // Fermer le modal
+            document.body.removeChild(modal);
+            
+            showNotification('Objectif hebdomadaire ajouté ! 📅', 'success');
+        });
+        
+        closeButton.addEventListener('click', () => {
+            document.body.removeChild(modal);
+        });
+        
+        // Fermer en cliquant à l'extérieur
+        modal.addEventListener('click', (e) => {
+            if (e.target === modal) {
+                document.body.removeChild(modal);
+            }
+        });
     }
 
     // Afficher l'historique des niveaux
@@ -256,6 +441,10 @@ document.addEventListener('DOMContentLoaded', function() {
         initEvents();
         console.log('Initialisation terminée');
     }
+
+    // Rendre les fonctions accessibles globalement
+    window.toggleWeeklyObjective = toggleWeeklyObjective;
+    window.deleteWeeklyObjective = deleteWeeklyObjective;
 
     // Démarrer l'application
     init();
