@@ -1,5 +1,5 @@
-// LevelUp Application - Version Hybride
-console.log('LevelUp Application - Version Hybride chargée');
+// LevelUp Application - Version Ultra Simple
+console.log('LevelUp Application - Version Ultra Simple chargée');
 
 // Données utilisateur
 let userData = {
@@ -118,115 +118,39 @@ function updateWeeklyObjectives() {
     console.log('Mise à jour terminée');
 }
 
-// Ajouter un objectif hebdomadaire avec modal simple
+// Ajouter un objectif hebdomadaire
 function addWeeklyObjective() {
     console.log('Ajout d\'objectif hebdomadaire');
     
-    // Créer le modal
-    const modal = document.createElement('div');
-    modal.id = 'weeklyObjectiveModal';
-    modal.className = 'fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50';
-    modal.innerHTML = `
-        <div class="bg-white rounded-2xl p-6 max-w-md mx-4 shadow-2xl">
-            <h3 class="text-xl font-bold text-gray-800 mb-4">➕ Ajouter un Objectif Hebdomadaire</h3>
-            <div class="space-y-4">
-                <div>
-                    <label class="block text-sm font-medium text-gray-700 mb-2">Objectif</label>
-                    <input type="text" id="weeklyObjectiveText" placeholder="Ex: Faire 3 séances de sport" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent" required>
-                </div>
-                <div>
-                    <label class="block text-sm font-medium text-gray-700 mb-2">Catégorie</label>
-                    <select id="weeklyObjectiveCategory" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent">
-                        <option value="Santé">💪 Santé</option>
-                        <option value="Apprentissage">📚 Apprentissage</option>
-                        <option value="Social">🗣️ Social</option>
-                        <option value="Créativité">🎨 Créativité</option>
-                        <option value="Organisation">📋 Organisation</option>
-                        <option value="Bien-être">🧘 Bien-être</option>
-                    </select>
-                </div>
-                <div>
-                    <label class="block text-sm font-medium text-gray-700 mb-2">Priorité</label>
-                    <select id="weeklyObjectivePriority" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent">
-                        <option value="low">🟢 Faible</option>
-                        <option value="medium" selected>🟡 Moyenne</option>
-                        <option value="high">🔴 Élevée</option>
-                    </select>
-                </div>
-            </div>
-            <div class="flex space-x-3 mt-6">
-                <button id="saveWeeklyObjective" class="flex-1 bg-gradient-to-r from-green-500 to-emerald-600 text-white py-2 px-4 rounded-lg hover:from-green-600 hover:to-emerald-700 transition-all duration-200">
-                    Ajouter
-                </button>
-                <button id="closeWeeklyObjectiveModal" class="flex-1 bg-gray-200 text-gray-800 py-2 px-4 rounded-lg hover:bg-gray-300 transition-colors">
-                    Annuler
-                </button>
-            </div>
-        </div>
-    `;
+    const text = prompt('Texte de l\'objectif :');
+    if (!text) return;
     
-    // Ajouter le modal au DOM
-    document.body.appendChild(modal);
+    const category = prompt('Catégorie :');
+    if (!category) return;
     
-    // Focus sur le premier champ
-    setTimeout(() => {
-        const textInput = document.getElementById('weeklyObjectiveText');
-        if (textInput) textInput.focus();
-    }, 100);
+    const priority = prompt('Priorité (low/medium/high) :', 'medium');
     
-    // Gérer la soumission
-    const saveButton = document.getElementById('saveWeeklyObjective');
-    const closeButton = document.getElementById('closeWeeklyObjectiveModal');
+    const newObjective = {
+        id: Date.now(),
+        text: text,
+        category: category,
+        priority: priority || 'medium',
+        completed: false,
+        createdAt: new Date().toISOString()
+    };
     
-    saveButton.addEventListener('click', () => {
-        const text = document.getElementById('weeklyObjectiveText').value.trim();
-        const category = document.getElementById('weeklyObjectiveCategory').value;
-        const priority = document.getElementById('weeklyObjectivePriority').value;
-        
-        console.log('Ajout d\'objectif:', { text, category, priority });
-        
-        if (!text) {
-            alert('Veuillez saisir un objectif !');
-            return;
-        }
-        
-        const newObjective = {
-            id: Date.now(),
-            text: text,
-            category: category,
-            priority: priority,
-            completed: false,
-            createdAt: new Date().toISOString()
-        };
-        
-        console.log('Nouvel objectif créé:', newObjective);
-        
-        userData.weeklyObjectives.push(newObjective);
-        console.log('Objectifs après ajout:', userData.weeklyObjectives);
-        
-        saveUserData();
-        console.log('Données sauvegardées');
-        
-        updateWeeklyObjectives();
-        console.log('Interface mise à jour');
-        
-        // Fermer le modal
-        document.body.removeChild(modal);
-        
-        alert('Objectif hebdomadaire ajouté ! 📅');
-    });
+    console.log('Nouvel objectif créé:', newObjective);
     
-    // Gérer la fermeture
-    closeButton.addEventListener('click', () => {
-        document.body.removeChild(modal);
-    });
+    userData.weeklyObjectives.push(newObjective);
+    console.log('Objectifs après ajout:', userData.weeklyObjectives);
     
-    // Fermer en cliquant à l'extérieur
-    modal.addEventListener('click', (e) => {
-        if (e.target === modal) {
-            document.body.removeChild(modal);
-        }
-    });
+    saveUserData();
+    console.log('Données sauvegardées');
+    
+    updateWeeklyObjectives();
+    console.log('Interface mise à jour');
+    
+    alert('Objectif hebdomadaire ajouté ! 📅');
 }
 
 // Basculer un objectif hebdomadaire
@@ -248,12 +172,10 @@ function deleteWeeklyObjective(index) {
     console.log('deleteWeeklyObjective appelé avec index:', index);
     
     if (userData.weeklyObjectives[index]) {
-        if (confirm('Êtes-vous sûr de vouloir supprimer cet objectif ?')) {
-            userData.weeklyObjectives.splice(index, 1);
-            saveUserData();
-            updateWeeklyObjectives();
-            alert('Objectif supprimé ! 🗑️');
-        }
+        userData.weeklyObjectives.splice(index, 1);
+        saveUserData();
+        updateWeeklyObjectives();
+        alert('Objectif supprimé ! 🗑️');
     }
 }
 
@@ -292,7 +214,7 @@ window.deleteWeeklyObjective = deleteWeeklyObjective;
 
 // Initialiser
 function init() {
-    console.log('Initialisation de LevelUp Hybride');
+    console.log('Initialisation de LevelUp Ultra Simple');
     
     loadUserData();
     updateUI();
@@ -317,7 +239,7 @@ function init() {
         }
     });
     
-    console.log('LevelUp Hybride initialisé');
+    console.log('LevelUp Ultra Simple initialisé');
 }
 
 // Démarrer quand le DOM est prêt
