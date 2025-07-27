@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Debug Simple - Objectifs</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 p-8">
+    <div class="max-w-2xl mx-auto bg-white rounded-lg shadow-lg p-6">
+        <h1 class="text-2xl font-bold mb-4">Debug Simple</h1>
+        
+        <!-- Test bouton -->
+        <button id="testBtn" class="bg-blue-500 text-white px-4 py-2 rounded mb-4">
+            Test Bouton
+        </button>
+        
+        <!-- Section Objectifs -->
+        <div class="mb-6">
+            <h2 class="text-lg font-semibold mb-2">Objectifs de la Semaine</h2>
+            <div id="weeklyObjectives" class="border-2 border-red-300 p-4">
+                <p class="text-red-600">Container trouvé</p>
+                <div id="objectivesList">
+                    <p>Aucun objectif</p>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Bouton d'ajout -->
+        <button id="addObjectiveBtn" class="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600">
+            ➕ Ajouter un objectif
+        </button>
+        
+        <!-- Debug info -->
+        <div class="mt-4 p-4 bg-gray-100 rounded">
+            <h3 class="font-semibold">Debug Info:</h3>
+            <div id="debugInfo">En attente...</div>
+        </div>
+    </div>
+
+    <script>
+        console.log('Script chargé');
+        
+        let objectives = [];
+        
+        function updateDebugInfo() {
+            const debugInfo = document.getElementById('debugInfo');
+            debugInfo.innerHTML = `
+                <p><strong>Nombre d'objectifs:</strong> ${objectives.length}</p>
+                <p><strong>Objectifs:</strong></p>
+                <pre>${JSON.stringify(objectives, null, 2)}</pre>
+            `;
+        }
+        
+        function updateObjectivesDisplay() {
+            console.log('updateObjectivesDisplay appelé');
+            const listContainer = document.getElementById('objectivesList');
+            
+            if (!listContainer) {
+                console.error('objectivesList non trouvé');
+                return;
+            }
+            
+            console.log('objectivesList trouvé, mise à jour...');
+            
+            if (objectives.length === 0) {
+                listContainer.innerHTML = '<p class="text-gray-500">Aucun objectif</p>';
+                return;
+            }
+            
+            listContainer.innerHTML = '';
+            objectives.forEach((objective, index) => {
+                const element = document.createElement('div');
+                element.className = 'bg-green-100 p-3 rounded mb-2 border';
+                element.innerHTML = `
+                    <div class="flex justify-between items-center">
+                        <div>
+                            <strong>${objective.text}</strong>
+                            <br>
+                            <small class="text-gray-600">${objective.category}</small>
+                        </div>
+                        <button onclick="deleteObjective(${index})" class="text-red-600 hover:text-red-800">
+                            🗑️
+                        </button>
+                    </div>
+                `;
+                listContainer.appendChild(element);
+            });
+            
+            console.log('Affichage mis à jour');
+        }
+        
+        function addObjective() {
+            console.log('addObjective appelé');
+            
+            const text = prompt('Texte de l\'objectif:');
+            if (!text) return;
+            
+            const category = prompt('Catégorie:');
+            if (!category) return;
+            
+            const newObjective = {
+                id: Date.now(),
+                text: text,
+                category: category,
+                priority: 'medium',
+                completed: false
+            };
+            
+            console.log('Nouvel objectif:', newObjective);
+            
+            objectives.push(newObjective);
+            console.log('Objectifs après ajout:', objectives);
+            
+            updateObjectivesDisplay();
+            updateDebugInfo();
+            
+            console.log('Objectif ajouté avec succès');
+        }
+        
+        function deleteObjective(index) {
+            console.log('deleteObjective appelé avec index:', index);
+            objectives.splice(index, 1);
+            updateObjectivesDisplay();
+            updateDebugInfo();
+        }
+        
+        // Rendre les fonctions globales
+        window.deleteObjective = deleteObjective;
+        
+        // Initialiser quand le DOM est prêt
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('DOM chargé - Initialisation');
+            
+            const testBtn = document.getElementById('testBtn');
+            const addBtn = document.getElementById('addObjectiveBtn');
+            
+            console.log('Test bouton trouvé:', testBtn);
+            console.log('Add bouton trouvé:', addBtn);
+            
+            if (testBtn) {
+                testBtn.addEventListener('click', function() {
+                    console.log('Test bouton cliqué');
+                    alert('Test bouton fonctionne !');
+                });
+            }
+            
+            if (addBtn) {
+                addBtn.addEventListener('click', addObjective);
+            }
+            
+            updateObjectivesDisplay();
+            updateDebugInfo();
+            
+            console.log('Initialisation terminée');
+        });
+    </script>
+</body>
+</html> 

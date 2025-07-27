@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LevelUp - Test V2</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body class="bg-gradient-to-br from-blue-50 via-purple-50 to-pink-50 min-h-screen">
+    <!-- Header -->
+    <header class="bg-white/80 backdrop-blur-sm border-b border-gray-200 sticky top-0 z-40">
+        <div class="max-w-4xl mx-auto px-4 py-4">
+            <div class="flex items-center justify-between">
+                <div class="flex items-center space-x-4">
+                    <h1 class="text-2xl font-bold text-gray-800">🎮 LevelUp</h1>
+                    <div class="flex items-center space-x-2">
+                        <span id="currentLevel" class="text-lg font-semibold text-blue-600">Niveau 3</span>
+                        <div class="bg-gray-200 rounded-full h-2 w-24">
+                            <div id="xpBar" class="bg-gradient-to-r from-blue-500 to-purple-500 h-2 rounded-full transition-all duration-300" style="width: 60%"></div>
+                        </div>
+                        <span id="currentXp" class="text-sm text-gray-600">120 / 200 XP</span>
+                    </div>
+                </div>
+                <a href="admin.html" class="bg-gray-100 text-gray-700 px-3 py-2 rounded-lg hover:bg-gray-200 transition-colors">
+                    ⚙️ Admin
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="max-w-4xl mx-auto px-4 py-8">
+        <!-- Avatar Section -->
+        <div class="text-center mb-8">
+            <div class="inline-block p-8 bg-white/90 backdrop-blur-sm rounded-3xl shadow-xl border-2 border-purple-200">
+                <div class="text-8xl mb-4">🤖</div>
+                <p class="text-gray-600">Avatar en évolution</p>
+            </div>
+        </div>
+
+        <!-- Daily Challenge Section -->
+        <div class="max-w-2xl mx-auto mb-8">
+            <div class="bg-white/90 backdrop-blur-sm rounded-2xl shadow-xl border-2 border-orange-200 p-6">
+                <h3 class="text-xl font-bold text-gray-800 mb-4">🎯 Défi du Jour</h3>
+                <div class="space-y-4">
+                    <div>
+                        <h4 id="challengeTitle" class="text-lg font-semibold text-gray-800">Appelle un ami que tu n'as pas vu depuis 6 mois</h4>
+                        <p id="challengeCategory" class="text-sm text-gray-600">Social</p>
+                    </div>
+                    <div class="flex space-x-3">
+                        <button id="completeChallenge" class="flex-1 bg-gradient-to-r from-green-500 to-emerald-600 text-white py-3 px-6 rounded-lg font-semibold hover:from-green-600 hover:to-emerald-700 transition-all duration-200">
+                            ✅ Je l'ai fait !
+                        </button>
+                        <button id="changeChallenge" class="flex-1 bg-gradient-to-r from-orange-500 to-red-600 text-white py-3 px-6 rounded-lg font-semibold hover:from-orange-600 hover:to-red-700 transition-all duration-200">
+                            🔄 Changer de défi
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Weekly Objectives Section -->
+        <div class="max-w-2xl mx-auto mb-8">
+            <div class="bg-white/90 backdrop-blur-sm rounded-2xl shadow-xl border-2 border-green-200 p-6">
+                <div class="flex items-center justify-between mb-4">
+                    <h3 class="text-xl font-bold text-gray-800">📅 Objectifs de la Semaine</h3>
+                    <span class="text-sm text-gray-600" id="weekDates">Semaine du 1er au 7 janvier</span>
+                </div>
+                <div id="weeklyObjectives" class="space-y-3">
+                    <!-- Weekly objectives will be populated here -->
+                </div>
+                <div class="mt-4 text-center">
+                    <button id="addWeeklyObjective" class="bg-gradient-to-r from-green-500 to-emerald-600 text-white px-4 py-2 rounded-lg hover:from-green-600 hover:to-emerald-700 transition-all duration-200">
+                        ➕ Ajouter un objectif
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Monthly Goals Section -->
+        <div class="max-w-2xl mx-auto mb-8">
+            <div class="bg-white/90 backdrop-blur-sm rounded-2xl shadow-xl border-2 border-purple-200 p-6">
+                <div class="flex items-center justify-between mb-4">
+                    <h3 class="text-xl font-bold text-gray-800">🎯 Objectifs Mensuels</h3>
+                    <button id="monthlyAssessment" class="bg-gradient-to-r from-purple-500 to-pink-600 text-white px-3 py-1 rounded-lg text-sm hover:from-purple-600 hover:to-pink-700 transition-all duration-200">
+                        📊 Évaluation Mensuelle
+                    </button>
+                </div>
+                <div id="monthlyGoals" class="space-y-2">
+                    <!-- Monthly goals will be populated here -->
+                </div>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <div class="max-w-2xl mx-auto">
+            <div class="flex space-x-4">
+                <button id="levelHistory" class="flex-1 bg-gradient-to-r from-blue-500 to-indigo-600 text-white py-3 px-6 rounded-lg font-semibold hover:from-blue-600 hover:to-indigo-700 transition-all duration-200">
+                    📈 Voir mes niveaux
+                </button>
+                <button id="shareProgress" class="flex-1 bg-gradient-to-r from-pink-500 to-rose-600 text-white py-3 px-6 rounded-lg font-semibold hover:from-pink-600 hover:to-rose-700 transition-all duration-200">
+                    📤 Partager ma progression
+                </button>
+            </div>
+        </div>
+    </main>
+
+    <script src="script-fixed-v2.js"></script>
+</body>
+</html> 
