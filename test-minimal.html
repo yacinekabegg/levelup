@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test Minimal</title>
+    <style>
+        body { font-family: Arial, sans-serif; padding: 20px; }
+        .container { max-width: 600px; margin: 0 auto; }
+        .objective { background: #f0f0f0; padding: 10px; margin: 5px 0; border-radius: 5px; }
+        .debug { background: #e0e0e0; padding: 10px; margin: 10px 0; border-radius: 5px; }
+        button { padding: 10px 20px; margin: 5px; border: none; border-radius: 5px; cursor: pointer; }
+        .add-btn { background: #4CAF50; color: white; }
+        .delete-btn { background: #f44336; color: white; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Test Minimal - Objectifs Hebdomadaires</h1>
+        
+        <button class="add-btn" onclick="addObjective()">➕ Ajouter un objectif</button>
+        
+        <h2>Objectifs actuels :</h2>
+        <div id="objectivesList">
+            <p>Aucun objectif</p>
+        </div>
+        
+        <div class="debug">
+            <h3>Debug Info :</h3>
+            <div id="debugInfo">En attente...</div>
+        </div>
+    </div>
+
+    <script>
+        // Variables globales
+        let objectives = [];
+        
+        // Fonction pour ajouter un objectif
+        function addObjective() {
+            console.log('addObjective appelé');
+            
+            const text = prompt('Texte de l\'objectif :');
+            if (!text) return;
+            
+            const category = prompt('Catégorie :');
+            if (!category) return;
+            
+            const newObjective = {
+                id: Date.now(),
+                text: text,
+                category: category,
+                completed: false
+            };
+            
+            console.log('Nouvel objectif :', newObjective);
+            
+            objectives.push(newObjective);
+            console.log('Objectifs après ajout :', objectives);
+            
+            updateDisplay();
+            console.log('Affichage mis à jour');
+        }
+        
+        // Fonction pour supprimer un objectif
+        function deleteObjective(index) {
+            console.log('deleteObjective appelé avec index :', index);
+            objectives.splice(index, 1);
+            updateDisplay();
+        }
+        
+        // Fonction pour mettre à jour l'affichage
+        function updateDisplay() {
+            console.log('updateDisplay appelé');
+            
+            const listContainer = document.getElementById('objectivesList');
+            const debugInfo = document.getElementById('debugInfo');
+            
+            console.log('Container trouvé :', listContainer);
+            
+            if (!listContainer) {
+                console.error('objectivesList non trouvé');
+                return;
+            }
+            
+            // Mettre à jour les infos de debug
+            debugInfo.innerHTML = `
+                <p><strong>Nombre d'objectifs :</strong> ${objectives.length}</p>
+                <p><strong>Objectifs :</strong></p>
+                <pre>${JSON.stringify(objectives, null, 2)}</pre>
+            `;
+            
+            // Mettre à jour la liste
+            if (objectives.length === 0) {
+                listContainer.innerHTML = '<p>Aucun objectif</p>';
+                return;
+            }
+            
+            listContainer.innerHTML = '';
+            objectives.forEach((objective, index) => {
+                const element = document.createElement('div');
+                element.className = 'objective';
+                element.innerHTML = `
+                    <div style="display: flex; justify-content: space-between; align-items: center;">
+                        <div>
+                            <strong>${objective.text}</strong><br>
+                            <small>${objective.category}</small>
+                        </div>
+                        <button class="delete-btn" onclick="deleteObjective(${index})">🗑️</button>
+                    </div>
+                `;
+                listContainer.appendChild(element);
+            });
+            
+            console.log('Affichage mis à jour avec succès');
+        }
+        
+        // Initialiser
+        console.log('Script chargé');
+        updateDisplay();
+        console.log('Initialisation terminée');
+    </script>
+</body>
+</html> 
